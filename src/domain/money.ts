@@ -13,9 +13,13 @@ export class Money {
     }
     return Currency.XAF;
   }
+
+  get value(): number {
+    return this.money.amount ?? 0;
+  }
 }
 
-export const emptyMoney = () => {
+export const EmptyMoney = () => {
   const money = new Money({
     amount: 0,
     currency: CurrencyDTO.XAF,

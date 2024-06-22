@@ -1,42 +1,59 @@
-import { AuthService } from "@/services/main";
 import { defineStore } from "pinia";
+import { AuthService } from "@/services/main";
+import { type Credential, EmptyUser, User, type UserData } from "@/domain/user";
+import { type ApiResponse, ErrorHandler } from "@/stores/api";
+import { LocaleState } from "@/utils/method";
 
-export const userStore = defineStore("user", {
+const { setToken, setUserId } = LocaleState();
+
+export const UserStore = defineStore("user", {
   actions: {
-    login: async () => {
+    login: async (credential: Credential): Promise<ApiResponse<undefined>> => {
       try {
-        await AuthService.authenticate({
-          requestBody: {},
+        const { value } = await AuthService.authenticate({
+          requestBody: {
+            email: credential.email,
+            password: credential.password,
+          },
         });
+        setToken(value!);
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    createOne: async () => {
+    createOne: async (user: UserData): Promise<ApiResponse<undefined>> => {
       try {
-        await AuthService.createUser({
-          requestBody: {},
+        const { id, accessToken } = await AuthService.createUser({
+          requestBody: User.builder(user),
         });
+        setToken(accessToken?.value!);
+        setUserId(id!);
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    getUserData: async () => {
+    getUserData: async (): Promise<ApiResponse<User>> => {
       try {
-        await AuthService.getCurrentUser({
-          extractCode: "",
+        const user = await AuthService.getCurrentUser({
+          extractCode: "extractCode_1",
         });
+        return {
+          data: new User(user),
+        };
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error, EmptyUser());
       }
     },
-    editUser: async () => {
+    editUser: async (user: UserData): Promise<ApiResponse<undefined>> => {
       try {
         await AuthService.updateUser({
-          requestBody: {},
+          requestBody: User.builder(user),
         });
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
   },

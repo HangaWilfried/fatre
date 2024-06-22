@@ -1,59 +1,75 @@
-import { PublicationService } from "@/services/main";
 import { defineStore } from "pinia";
+import { Post, type PostData } from "@/domain/post";
+import { PublicationService } from "@/services/main";
+import { type ApiResponse, ErrorHandler } from "@/stores/api";
 
-export const postStore = defineStore("post", {
+export const PostStore = defineStore("post", {
   actions: {
-    createOne: async () => {
+    createOne: async (post: PostData): Promise<ApiResponse<string>> => {
       try {
-        await PublicationService.createPublication({
-          requestBody: {},
+        const postId = await PublicationService.createPublication({
+          requestBody: Post.builder(post),
         });
+        return { data: postId };
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    getMyPosts: async () => {
+    getMyPosts: async (): Promise<ApiResponse<Post[]>> => {
       try {
-        await PublicationService.getMyPublications();
+        const posts = await PublicationService.getMyPublications();
+        return {
+          data: posts.map((post) => new Post(post)),
+        };
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error, []);
       }
     },
-    editOne: async () => {
+    editOne: async ({
+      postId,
+      post,
+    }: {
+      postId: string;
+      post: PostData;
+    }): Promise<ApiResponse<undefined>> => {
       try {
         await PublicationService.updatePublication({
-          publicationId: "",
-          requestBody: {},
+          publicationId: postId,
+          requestBody: Post.builder(post),
         });
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    deleteOne: async () => {
+    deleteOne: async (postId: string): Promise<ApiResponse<undefined>> => {
       try {
         await PublicationService.deletePublicationById({
-          publicationId: "",
+          publicationId: postId,
         });
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    publishOne: async () => {
+    publishOne: async (postId: string): Promise<ApiResponse<undefined>> => {
       try {
         await PublicationService.postPublication({
-          publicationId: "",
+          publicationId: postId,
         });
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
-    maskOne: async () => {
+    maskOne: async (postId: string): Promise<ApiResponse<undefined>> => {
       try {
         await PublicationService.removePublication({
-          publicationId: "",
+          publicationId: postId,
         });
+        return {};
       } catch (error) {
-        console.log(error);
+        return ErrorHandler(error);
       }
     },
   },

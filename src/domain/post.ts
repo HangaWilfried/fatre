@@ -1,5 +1,18 @@
-import type { PublicationDTO } from "@/services/main";
-import { emptyMoney, Money } from "./money";
+import {
+  type CreatePublicationDTO,
+  CurrencyDTO,
+  type PublicationDTO,
+} from "@/services/main";
+import { EmptyMoney, Money } from "./money";
+
+export type PostData = {
+  amount: {
+    value: number;
+  };
+  images: string[];
+  title: string;
+  description: string;
+};
 
 export class Post {
   public isNull: boolean;
@@ -31,19 +44,31 @@ export class Post {
     return Status.DRAFT;
   }
 
-  get price(): Money {
+  get amount(): Money {
     if (this.post.price) {
       return new Money(this.post.price);
     }
-    return emptyMoney();
+    return EmptyMoney();
   }
 
   get isDraft(): boolean {
     return this.status === Status.DRAFT;
   }
+
+  static builder(post: PostData): CreatePublicationDTO {
+    return {
+      price: {
+        amount: post.amount.value,
+        currency: CurrencyDTO.XAF,
+      },
+      allImageIds: post.images,
+      title: post.title,
+      description: post.description,
+    };
+  }
 }
 
-export const emptyPost = () => {
+export const EmptyPost = () => {
   const post = new Post({});
   post.isNull = true;
   return post;

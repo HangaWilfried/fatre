@@ -3,12 +3,12 @@
 </template>
 
 <script setup lang="ts">
-import { userStore } from "@/stores/user";
+import { UserStore } from "@/stores/user";
 import { onBeforeMount } from "vue";
 
-const store = userStore();
+const store = UserStore();
 
 onBeforeMount(async () => {
   await store.getUserData();
-})
+});
 </script>
