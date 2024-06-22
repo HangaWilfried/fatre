@@ -17,10 +17,13 @@
     "openapi:main": "openapi --input ./specs/main.yaml --output ./src/services/main --client axios --useOptions"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "jwt-decode": "^4.0.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
-    "vue-router": "^4.3.3",
-    "jwt-decode": "^4.0.0"
+    "vue-i18n": "^9.13.1",
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",
