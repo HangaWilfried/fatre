@@ -17,6 +17,13 @@ export class Money {
   get value(): number {
     return this.money.amount ?? 0;
   }
+
+  get toString(): string {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: this.currency,
+    }).format(this.value);
+  }
 }
 
 export const EmptyMoney = () => {

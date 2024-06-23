@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { ImageService } from "@/services/main";
 import { type ApiResponse, ErrorHandler } from "@/stores/api";
 
-export const MediaStore = defineStore("media", () => {
+export const UseMediaStore = defineStore("media", () => {
   const cachedBlobs = reactive<Record<string, Blob>>({});
 
   const createOne = async (blob: Blob): Promise<ApiResponse<string>> => {

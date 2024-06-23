@@ -3,7 +3,7 @@ import { Post, type PostData } from "@/domain/post";
 import { PublicationService } from "@/services/main";
 import { type ApiResponse, ErrorHandler } from "@/stores/api";
 
-export const PostStore = defineStore("post", {
+export const UsePostStore = defineStore("post", {
   actions: {
     createOne: async (post: PostData): Promise<ApiResponse<string>> => {
       try {

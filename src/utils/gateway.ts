@@ -6,7 +6,7 @@ const { getToken } = LocaleState();
 export const prepareApis = () => {
   OpenAPI.HEADERS = customHeaders;
   OpenAPI.TOKEN = getPublicAccessToken;
-  OpenAPI.BASE = import.meta.env.API_BASE_URL;
+  OpenAPI.BASE = import.meta.env.VITE_REST_API_BASE_URL;
 };
 
 const getPublicAccessToken = async (): Promise<string> => {

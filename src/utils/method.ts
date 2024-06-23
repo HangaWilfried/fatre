@@ -17,3 +17,10 @@ export function LocaleState() {
     },
   };
 }
+
+export const uuid = (): string => {
+  const heap = Date.now().toString(36);
+  const tail = Math.random().toString(36).substring(2);
+
+  return heap + tail;
+};
