@@ -3,11 +3,12 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { UserStore } from "@/stores/user";
 import { useTranslation } from "@/utils/i18n";
-import type { Credential } from "@/domain/user";
+import type { UserData } from "@/domain/user";
 
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, sameAs } from "@vuelidate/validators";
 
+import TextField from "@/components/TextField.vue";
 import EmailField from "@/components/EmailField.vue";
 import ButtonWrapper from "@/components/ButtonWrapper.vue";
 import PasswordField from "@/components/PasswordField.vue";
@@ -18,9 +19,13 @@ const t = useTranslation();
 const router = useRouter();
 const isLoading = ref<boolean>(false);
 
-const user = reactive<Credential>({
+type State = { confirmPassword: string } & UserData;
+const user = reactive<State>({
   email: "",
+  lastname: "",
   password: "",
+  firstname: "",
+  confirmPassword: "",
 });
 
 const $externalResults = { email: "" };
@@ -33,17 +38,23 @@ const rules = {
   password: {
     required,
   },
+  lastname: {
+    required,
+  },
+  confirmPassword: {
+    sameAs: sameAs(user.password),
+  },
 };
 
 const v$ = useVuelidate(rules, user, { $externalResults });
 
-const tryLogin = async (): Promise<void> => {
+const tryCreateAccount = async (): Promise<void> => {
   isLoading.value = true;
   const isValid = await v$.value.$validate();
   if (isValid) {
-    const { error } = await store.login(user);
+    const { error } = await store.createOne(user);
     if (error) $externalResults.email = t(error);
-    else await router.push("/admin");
+    else await router.push("/login");
   }
   isLoading.value = false;
 };
@@ -63,29 +74,46 @@ const tryLogin = async (): Promise<void> => {
           {{ error.$message }}
         </span>
       </div>
+      <TextField
+        :label="t('lastname')"
+        v-model="user.lastname"
+        :errors="v$.lastname.$errors"
+        :placeholder="t('placeholder.lastname')"
+      />
+      <TextField
+        :label="t('firstname')"
+        v-model="user.firstname"
+        :placeholder="t('placeholder.firstname')"
+      />
       <EmailField
-        v-model="user.email"
         :label="t('email')"
+        v-model="user.email"
         :errors="v$.email.$errors"
         :placeholder="t('placeholder.email')"
       />
       <PasswordField
+        :errors="v$.password.$errors"
         v-model="user.password"
         :label="t('password')"
-        :errors="v$.password.$errors"
         :placeholder="t('placeholder.password')"
       />
+      <PasswordField
+        :errors="v$.confirmPassword.$errors"
+        v-model="user.confirmPassword"
+        :label="t('confirm-password')"
+        :placeholder="t('placeholder.confirm-password')"
+      />
       <ButtonWrapper
-        @click="tryLogin"
+        @click="tryCreateAccount"
         :is-loading="isLoading"
-        :label="t('login')"
+        :label="t('create-account')"
       />
     </div>
     <div class="flex flex-col gap-1 items-center">
-      <span>{{ t("do-not-have-account") }}</span>
-      <RouterLink to="/signup">
+      <span>{{ t("has-account") }}</span>
+      <RouterLink to="/login">
         <span class="text-blue-600 font-bold text-sm">
-          {{ t("create-account") }}
+          {{ t("login") }}
         </span>
       </RouterLink>
     </div>

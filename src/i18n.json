@@ -1,4 +1,30 @@
 {
-  "en": {},
-  "fr": {}
+  "en": {
+    "has-account": "You already have a Fatre account ?",
+    "do-not-have-account": "You do not yet have account ?",
+    "create-account": "Create account",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "email",
+    "login": "Login",
+    "placeholder": {
+      "firstname": "firstname",
+      "lastname": "lastname",
+      "email": "email"
+    }
+  },
+  "fr": {
+    "has-account": "Vous avez deja un compte chez Fatre ?",
+    "do-not-have-account": "Vous n'avez pas encore de compte ?",
+    "create-account": "Creez votre compte",
+    "login": "Connectez-vous",
+    "firstname": "firstname",
+    "lastname": "lastname",
+    "email": "email",
+    "placeholder": {
+      "firstname": "firstname",
+      "lastname": "lastname",
+      "email": "email"
+    }
+  }
 }

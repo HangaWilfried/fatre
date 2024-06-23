@@ -16,13 +16,13 @@ export type UserData = {
   password: string;
   firstname: string;
   lastname: string;
-  dateOfBirth: string;
-  gender: string;
-  phoneNumber: {
+  dateOfBirth?: string;
+  gender?: string;
+  phoneNumber?: {
     number: string;
     countryCode: string;
   };
-  profileImageId: string;
+  profileImageId?: string;
 };
 
 export class User {
