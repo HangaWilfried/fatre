@@ -20,6 +20,7 @@ const showPassword = ref<boolean>(false);
         :type="showPassword ? 'text' : 'password'"
         :id="label"
         v-model="model"
+        :data-test="`input-${label}`"
         :class="[
           'ipt-border',
           errors?.length ? 'ipt-border-error' : 'ipt-border-pristine',

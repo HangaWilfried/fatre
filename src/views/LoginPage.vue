@@ -1,7 +1,50 @@
+<template>
+  <section>
+    <h1>Fatre</h1>
+    <div>
+      <h2>Log in to continue</h2>
+      <div class="flex flex-col gap-0.5">
+        <span
+          v-for="error in v$.$errors"
+          :key="error.$uid"
+          class="text-rose-600 font-bold text-sm"
+        >
+          {{ error.$message }}
+        </span>
+      </div>
+      <EmailField
+        v-model="user.email"
+        :label="t('email')"
+        :errors="v$.email.$errors"
+        :placeholder="t('placeholder.email')"
+      />
+      <PasswordField
+        v-model="user.password"
+        :label="t('password')"
+        :errors="v$.password.$errors"
+        :placeholder="t('placeholder.password')"
+      />
+      <ButtonWrapper
+        @click="tryLogin"
+        :is-loading="isLoading"
+        :label="t('continue')"
+      />
+    </div>
+    <div class="flex flex-col gap-1 items-center">
+      <span>{{ t("do-not-have-account") }}</span>
+      <RouterLink to="/signup">
+        <span class="text-blue-600 font-bold text-sm">
+          {{ t("create-account") }}
+        </span>
+      </RouterLink>
+    </div>
+  </section>
+</template>
+
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserStore } from "@/stores/user";
+import { useSessionStore } from "@/stores/session";
 import { useTranslation } from "@/utils/i18n";
 import type { Credential } from "@/domain/user";
 
@@ -12,7 +55,7 @@ import EmailField from "@/components/EmailField.vue";
 import ButtonWrapper from "@/components/ButtonWrapper.vue";
 import PasswordField from "@/components/PasswordField.vue";
 
-const store = UserStore();
+const store = useSessionStore();
 const t = useTranslation();
 
 const router = useRouter();
@@ -43,51 +86,8 @@ const tryLogin = async (): Promise<void> => {
   if (isValid) {
     const { error } = await store.login(user);
     if (error) $externalResults.email = t(error);
-    else await router.push("/admin");
+    else await router.push("/admin/products");
   }
   isLoading.value = false;
 };
 </script>
-
-<template>
-  <section>
-    <h1>Fatre</h1>
-    <div>
-      <h2>Log in to continue</h2>
-      <div class="flex flex-col gap-0.5">
-        <span
-          v-for="error in v$.$errors"
-          :key="error.$uid"
-          class="text-rose-600 font-bold text-sm"
-        >
-          {{ error.$message }}
-        </span>
-      </div>
-      <EmailField
-        v-model="user.email"
-        :label="t('email')"
-        :errors="v$.email.$errors"
-        :placeholder="t('placeholder.email')"
-      />
-      <PasswordField
-        v-model="user.password"
-        :label="t('password')"
-        :errors="v$.password.$errors"
-        :placeholder="t('placeholder.password')"
-      />
-      <ButtonWrapper
-        @click="tryLogin"
-        :is-loading="isLoading"
-        :label="t('login')"
-      />
-    </div>
-    <div class="flex flex-col gap-1 items-center">
-      <span>{{ t("do-not-have-account") }}</span>
-      <RouterLink to="/signup">
-        <span class="text-blue-600 font-bold text-sm">
-          {{ t("create-account") }}
-        </span>
-      </RouterLink>
-    </div>
-  </section>
-</template>

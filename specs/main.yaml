@@ -45,12 +45,8 @@ paths:
             schema:
               $ref: '#/components/schemas/RegistrationRequestDTO'
       responses:
-        201:
+        204:
           description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RegistrationDTO'
   /user:
     get:
       tags:
@@ -165,6 +161,12 @@ paths:
       summary: get all my publications
       description: get all my publications
       operationId: getMyPublications
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/PublicationStatusDTO'
       responses:
         200:
           description: successful operation
@@ -253,6 +255,29 @@ paths:
           description: Publication Not Found
         403:
           description: Forbidden Operation
+    get:
+      tags:
+        - Publication
+      summary: get publication by ID
+      description: get publication by ID
+      operationId: getPublicationByID
+      parameters:
+        - name: publicationId
+          in: path
+          description: The id of the publication to get
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicationDTO'
+        404:
+          description: Publication Not Found
 
 components:
   schemas:

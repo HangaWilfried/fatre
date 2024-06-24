@@ -13,6 +13,7 @@ defineProps<{ label: string; placeholder: string; errors?: ErrorObject[] }>();
       :id="label"
       type="email"
       v-model="model"
+      :data-test="`input-${label}`"
       :class="[
         'ipt-border',
         errors?.length ? 'ipt-border-error' : 'ipt-border-pristine',
