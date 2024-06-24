@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { Post, type PostData } from "@/domain/post";
-import { PublicationService } from "@/services/main";
+import { EmptyPost, Post, type PostData } from "@/domain/post";
+import { PublicationService, PublicationStatusDTO } from "@/services/main";
 import { type ApiResponse, ErrorHandler } from "@/stores/api";
 
-export const UsePostStore = defineStore("post", {
+export const usePostStore = defineStore("post", {
   actions: {
     createOne: async (post: PostData): Promise<ApiResponse<string>> => {
       try {
@@ -15,14 +15,30 @@ export const UsePostStore = defineStore("post", {
         return ErrorHandler(error);
       }
     },
-    getMyPosts: async (): Promise<ApiResponse<Post[]>> => {
+    getMyPosts: async (status?: string): Promise<ApiResponse<Post[]>> => {
       try {
-        const posts = await PublicationService.getMyPublications();
+        const posts = await PublicationService.getMyPublications({
+          status: PublicationStatusDTO[
+            status as keyof typeof PublicationStatusDTO
+          ]
+        });
         return {
           data: posts.map((post) => new Post(post)),
         };
       } catch (error) {
         return ErrorHandler(error, []);
+      }
+    },
+    getPostById: async (publicationId: string): Promise<ApiResponse<Post>> => {
+      try {
+        const post = await PublicationService.getPublicationById({
+          publicationId,
+        });
+        return {
+          data: new Post(post),
+        };
+      } catch (error) {
+        return ErrorHandler(error, EmptyPost());
       }
     },
     editOne: async ({

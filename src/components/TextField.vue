@@ -12,6 +12,7 @@ defineProps<{ label: string; placeholder: string; errors?: ErrorObject[] }>();
     <input
       type="text"
       :id="label"
+      :data-test="`input-${label}`"
       v-model="model"
       :class="[
         'ipt-border',

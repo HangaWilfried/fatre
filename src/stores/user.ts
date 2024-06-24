@@ -1,34 +1,15 @@
 import { defineStore } from "pinia";
 import { AuthService } from "@/services/main";
-import { type Credential, EmptyUser, User, type UserData } from "@/domain/user";
 import { type ApiResponse, ErrorHandler } from "@/stores/api";
-import { LocaleState } from "@/utils/method";
+import { EmptyUser, User, type UserData } from "@/domain/user";
 
-const { setToken, setUserId } = LocaleState();
-
-export const UserStore = defineStore("user", {
+export const useUserStore = defineStore("user", {
   actions: {
-    login: async (credential: Credential): Promise<ApiResponse<undefined>> => {
-      try {
-        const { value } = await AuthService.authenticate({
-          requestBody: {
-            email: credential.email,
-            password: credential.password,
-          },
-        });
-        setToken(value!);
-        return {};
-      } catch (error) {
-        return ErrorHandler(error);
-      }
-    },
     createOne: async (user: UserData): Promise<ApiResponse<undefined>> => {
       try {
-        const { id, accessToken } = await AuthService.createUser({
+        await AuthService.createUser({
           requestBody: User.builder(user),
         });
-        setToken(accessToken?.value!);
-        setUserId(id!);
         return {};
       } catch (error) {
         return ErrorHandler(error);

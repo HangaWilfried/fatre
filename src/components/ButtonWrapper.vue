@@ -1,12 +1,15 @@
 <script setup lang="ts">
 defineProps<{
-  isLoading: boolean;
+  isLoading?: boolean;
   label: string;
 }>();
 </script>
 
 <template>
-  <button class="py-1 px-2 flex items-center gap-2 justify-center">
+  <button
+    :data-test="`${label}-btn`"
+    class="py-1 px-2 flex items-center gap-2 justify-center"
+  >
     <slot name="cta">
       <span v-if="isLoading" class="spinner" />
       <span v-else>{{ label }}</span>

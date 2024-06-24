@@ -20,6 +20,29 @@ const router = createRouter({
       name: "signup page",
       component: () => import("@/views/SignupPage.vue"),
     },
+    {
+      path: "/admin/products",
+      name: "admin page",
+      component: () => import("@/views/admin/LayoutPage.vue"),
+      children: [
+        {
+          path: "",
+          name: "products page",
+          component: () => import("@/views/admin/PostsListPage.vue"),
+        },
+        {
+          path: "/products/:id",
+          props: true,
+          name: "single product page",
+          component: () => import("@/views/admin/PostDetailsPage.vue"),
+        },
+        {
+          path: "/admin/settings",
+          name: "user settings page",
+          component: () => import("@/views/admin/SettingsPage.vue"),
+        },
+      ]
+    },
   ],
 });
 
