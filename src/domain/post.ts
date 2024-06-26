@@ -6,10 +6,8 @@ import {
 import { EmptyMoney, Money } from "./money";
 
 export type PostData = {
-  amount: {
-    value: number;
-  };
-  images: string[];
+  amount: string;
+  fileIds: string[];
   title: string;
   description: string;
 };
@@ -58,10 +56,10 @@ export class Post {
   static builder(post: PostData): CreatePublicationDTO {
     return {
       price: {
-        amount: post.amount.value,
+        amount: Number(post.amount),
         currency: CurrencyDTO.XAF,
       },
-      allImageIds: post.images,
+      allImageIds: post.fileIds,
       title: post.title,
       description: post.description,
     };
@@ -75,6 +73,6 @@ export const EmptyPost = () => {
 };
 
 export enum Status {
-  DRAFT = "DRAFT",
-  POST = "POST",
+  DRAFT = "draft",
+  POST = "post",
 }

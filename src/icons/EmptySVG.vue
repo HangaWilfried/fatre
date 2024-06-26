@@ -1,5 +1,10 @@
 <template>
-  <svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    class="w-[200px] h-[200px]"
+    viewBox="0 0 68 68"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <ellipse
       opacity="0.1"
       cx="34"
