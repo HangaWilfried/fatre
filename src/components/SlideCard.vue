@@ -1,74 +1,134 @@
-<script setup lang="ts">
-import { ref, computed } from "vue";
-import BaseImage from "@/components/BaseImage.vue";
-
-const props = defineProps<{
-  files: string[];
-}>();
-
-const slider = ref<HTMLElement | undefined>(undefined);
-
-const currentSlide = ref<number>(0);
-const orientation = ref<number>(1);
-
-const showNextSlide = (): void => {
-  if (currentSlide.value < props.files.length - 1) {
-    currentSlide.value++;
-    orientation.value = 1;
-  }
-};
-
-const showPreviousSlide = (): void => {
-  if (currentSlide.value > 0) {
-    currentSlide.value--;
-    orientation.value = -1;
-  }
-};
-
-const offsetWidth = computed<number>(() => {
-  return slider.value?.offsetWidth ?? 0;
-});
-
-const slide = computed(() => ({
-  width: offsetWidth.value * props.files.length + "px",
-  transform: `translateX(${currentSlide.value * orientation.value * offsetWidth.value}px)`,
-}));
-</script>
-
 <template>
-  <section ref="slider" class="overflow-hidden relative h-32">
-    <div :style="slide" class="flex">
-      <BaseImage
-        :class="`shrink-0 w-[${offsetWidth}px]`"
-        v-for="file in files"
-        :key="file"
-        :path="file"
-      />
-    </div>
+  <section class="relative overflow-hidden">
     <div
-      class="absolute top-0 left-0 w-full h-full flex flex-col justify-between p-4"
+      :style="widthDependingSlideElements"
+      ref="sliderContainer"
+      class="flex h-[321px]"
     >
-      <div class="flex justify-between items-center py-4">
-        <span
-          @click="showPreviousSlide"
-          class="text-xl border border-gray-800/20 bg-gray-800/20 text-white"
-        >
-          &larr;
-        </span>
-        <span
-          @click="showNextSlide"
-          class="text-xl border border-gray-800/20 bg-gray-800/20 text-white"
-        >
-          &rarr;
-        </span>
-      </div>
-      <div class="overflow-hidden flex gap-2">
-        <span
-          v-for="file in files"
-          :key="file"
-          class="border w-3 h-3 bg-gray-400 shrink-0"
-        />
-      </div>
+      <BaseImage
+        :key="index"
+        :path="file"
+        :style="listPosition"
+        v-for="(file, index) in files"
+        class="translate-x-0 transform ease-in-out duration-200"
+      />
+      <ArrowWithBackground
+        class="absolute right-4 top-[45%] cursor-pointer"
+        v-if="currentIndex < files?.length - 1"
+        @click.stop="increaseCurrentIndex"
+        data-test="forward-chevron-icon"
+      />
+      <ArrowWithBackground
+        class="absolute -rotate-180 cursor-pointer left-4 top-[45%]"
+        v-if="currentIndex > 0"
+        @click.stop="decreaseCurrentIndex"
+        data-test="backward-chevron-icon"
+      />
+      <LegendSlider ref="legend" :current-item="currentIndex" :files="files" />
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { computed, onMounted, type PropType, ref } from "vue";
+import BaseImage from "@/components/BaseImage.vue";
+import ArrowWithBackground from "@/components/ArrowWithBackground.vue";
+import LegendSlider from "@/components/LegendSlider.vue";
+
+const props = defineProps({
+  files: {
+    type: Array as PropType<string[]>,
+    required: true,
+  },
+});
+const widthDependingSlideElements = computed(
+  (): Record<string, string> => ({
+    width: props.files.length * 100 + "%",
+  }),
+);
+const sliderContainer = ref<HTMLElement | null>(null);
+const currentIndex = ref<number>(0);
+const listPosition = computed(
+  (): Record<string, string> => ({
+    transform: `translateX(-${currentIndex.value * 100}%)`,
+  }),
+);
+
+const legend = ref<HTMLElement | undefined>(undefined);
+const scrollLeftPixel = ref<number>(0);
+
+const shouldScrollLeft = computed(() => scrollLeftPixel.value > 0);
+const shouldScrollRight = computed(() => {
+  if (!legend.value) return;
+
+  return (
+    legend.value.scrollWidth - legend.value.clientWidth >=
+    scrollLeftPixel.value
+  );
+});
+
+const scrollToLeft = () => {
+  if (legend.value && shouldScrollLeft.value) {
+    legend.value.scrollLeft -= getScrollWidth();
+    scrollLeftPixel.value -= getScrollWidth();
+  }
+};
+
+const getScrollWidth = () =>
+  legend.value?.children[0]?.getBoundingClientRect().width ?? 0;
+
+const scrollToRight = () => {
+  if (legend.value && shouldScrollRight.value) {
+    legend.value.scrollLeft += getScrollWidth();
+    scrollLeftPixel.value += getScrollWidth();
+  }
+};
+
+const increaseCurrentIndex = (): void => {
+  if (currentIndex.value < props.files.length - 1) {
+    currentIndex.value += 1;
+    scrollToLeft();
+    return;
+  }
+  currentIndex.value = 0;
+};
+
+const decreaseCurrentIndex = (): void => {
+  if (currentIndex.value > 0) {
+    currentIndex.value -= 1;
+    scrollToRight();
+    return;
+  }
+  currentIndex.value = props.files.length - 1;
+};
+
+const startXPoint = ref<number>(0);
+const endXPoint = ref<number>(0);
+const touchstart = (event: TouchEvent): void => {
+  startXPoint.value = event.touches[0].clientX;
+  endXPoint.value = 0;
+};
+const touchmove = (event: TouchEvent): void => {
+  endXPoint.value = event.touches[0].clientX;
+};
+const touchend = (): void => {
+  if (!endXPoint.value || Math.abs(endXPoint.value - startXPoint.value) < 20) {
+    return;
+  }
+  if (endXPoint.value < startXPoint.value) {
+    increaseCurrentIndex();
+    return;
+  }
+  decreaseCurrentIndex();
+};
+
+onMounted(() => {
+  sliderContainer.value?.addEventListener("touchstart", (event) =>
+    touchstart(event),
+  );
+  sliderContainer.value?.addEventListener("touchend", touchend);
+  sliderContainer.value?.addEventListener("touchmove", (event) =>
+    touchmove(event),
+  );
+});
+</script>

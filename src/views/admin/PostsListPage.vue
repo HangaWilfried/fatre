@@ -1,6 +1,11 @@
 <template>
   <section class="space-y-4">
-    <div>list of publications</div>
+    <div class="flex justify-between items-center">
+      <h1>list of publications</h1>
+      <RouterLink to="/products/new">
+        <ButtonWrapper class="text-white bg-gray-700 rounded" label="add +" />
+      </RouterLink>
+    </div>
     <div v-if="isLoading" class="cards">
       <CardSkeleton />
     </div>
@@ -12,7 +17,7 @@
         :handleClick="goToPostDetails"
       />
     </div>
-    <div v-else>
+    <div v-else class="flex justify-center pt-10">
       <EmptySVG />
     </div>
   </section>
@@ -23,6 +28,7 @@ import type { Post } from "@/domain/post";
 import { usePostStore } from "@/stores/post";
 import { onBeforeMount, defineAsyncComponent, ref, type Ref } from "vue";
 import { useRouter } from "vue-router";
+import ButtonWrapper from "@/components/ButtonWrapper.vue";
 
 const PostCard = defineAsyncComponent(
   () => import("@/components/PostCard.vue"),
@@ -36,6 +42,7 @@ const store = usePostStore();
 const router = useRouter();
 
 const posts = ref<Post[]>([]) as Ref<Post[]>;
+
 const isLoading = ref<boolean>(false);
 
 const goToPostDetails = async (postId: string): Promise<void> => {

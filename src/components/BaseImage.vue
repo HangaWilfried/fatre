@@ -1,22 +1,26 @@
 <template>
   <div
-    class="relative rounded-lg overflow-hidden aspect-video"
+    :class="[
+      'w-full h-full rounded-lg',
+      { 'bg-gray-400 animate-pulse': isLoading },
+    ]"
     :data-id="uniqueId"
   >
-    <div
-      v-if="isLoading"
-      class="w-full h-full left-0 top-0 bg-gray-400 animate-pulse"
+    <img
+      v-if="source"
+      :src="source"
+      alt="img.placeholder"
+      class="object-cover rounded-lg"
     />
-    <img :src="source" alt="img.placeholder" class="object-cover" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { UseMediaStore } from "@/stores/media";
+import { useMediaStore } from "@/stores/media";
 import { useIntersectionObserver } from "@/utils/observer";
 
-const store = UseMediaStore();
+const store = useMediaStore();
 
 const props = defineProps({
   path: {
@@ -29,12 +33,14 @@ const source = ref<string>("");
 const isLoading = ref<boolean>(true);
 
 const getSource = async () => {
+  isLoading.value = true;
   const { error, data } = await store.getOne(props.path);
   if (error) {
     source.value = new URL("../assets/images/", import.meta.url).href;
   }
   if (data) {
-    source.value = URL.createObjectURL(data);
+    const clone = await data.clone().blob();
+    source.value = URL.createObjectURL(clone);
   }
   isLoading.value = false;
 };

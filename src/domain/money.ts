@@ -19,7 +19,8 @@ export class Money {
   }
 
   get toString(): string {
-    return new Intl.NumberFormat("en-US", {
+    const locale = navigator.language ?? "en-US";
+    return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: this.currency,
     }).format(this.value);

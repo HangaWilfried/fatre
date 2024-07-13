@@ -37,11 +37,17 @@ const router = createRouter({
           component: () => import("@/views/admin/PostDetailsPage.vue"),
         },
         {
+          path: "/products/new",
+          props: true,
+          name: "add product page",
+          component: () => import("@/views/admin/CreatePostPage.vue"),
+        },
+        {
           path: "/admin/settings",
           name: "user settings page",
           component: () => import("@/views/admin/SettingsPage.vue"),
         },
-      ]
+      ],
     },
   ],
 });

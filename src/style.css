@@ -8,7 +8,7 @@
   }
 
   .ipt-border {
-    @apply outline-none rounded-lg p-2 border border-gray-300 text-gray-700;
+    @apply outline-none rounded-lg h-10 px-2 border border-gray-300 text-gray-700;
   }
 
   .ipt-border-pristine {
@@ -21,5 +21,26 @@
 
   .spinner {
     @apply border-2 border-gray-500 border-l-blue-700 w-6 h-6 rounded-full animate-spin;
+  }
+
+  .modal-wrapper {
+    @apply min-h-screen box-border z-10 fixed w-full top-0
+      left-0 bg-gray-800/60 flex flex-col justify-center items-center;
+  }
+
+  .scroll {
+    @apply overflow-y-auto;
+  }
+
+  .scroll::-webkit-scrollbar-thumb {
+    @apply bg-gray-800 rounded-[10px];
+  }
+
+  .scroll::-webkit-scrollbar-track {
+    @apply rounded-[10px] bg-gray-500;
+  }
+
+  .scroll::-webkit-scrollbar {
+    @apply w-[2px] rounded-[10px];
   }
 }

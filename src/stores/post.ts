@@ -18,9 +18,8 @@ export const usePostStore = defineStore("post", {
     getMyPosts: async (status?: string): Promise<ApiResponse<Post[]>> => {
       try {
         const posts = await PublicationService.getMyPublications({
-          status: PublicationStatusDTO[
-            status as keyof typeof PublicationStatusDTO
-          ]
+          status:
+            PublicationStatusDTO[status as keyof typeof PublicationStatusDTO],
         });
         return {
           data: posts.map((post) => new Post(post)),

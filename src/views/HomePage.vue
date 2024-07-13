@@ -1,5 +1,5 @@
 <template>
-   <header class="flex justify-between items-center">
+  <header class="flex justify-between items-center">
     <h1>Fatre</h1>
     <h2 v-if="session.token.isLoggedIn">
       welcome
