@@ -10,7 +10,11 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col gap-2" @click="handleClick(post.id)">
+  <div 
+    class="flex flex-col gap-2 overflow-hidden" 
+    :data-test="`product-${post.id}`"
+    @click="handleClick(post.id)"
+  >
     <SlideCard :files="post.files" />
     <h1>{{ post.title }}</h1>
     <span>{{ post.amount.toString }}</span>

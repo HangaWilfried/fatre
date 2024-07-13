@@ -46,7 +46,7 @@ const posts = ref<Post[]>([]) as Ref<Post[]>;
 const isLoading = ref<boolean>(false);
 
 const goToPostDetails = async (postId: string): Promise<void> => {
-  await router.push(`/admin/products/${postId}`);
+  await router.push(`/products/${postId}`);
 };
 
 onBeforeMount(async () => {
