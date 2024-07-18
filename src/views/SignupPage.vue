@@ -49,7 +49,7 @@
     </div>
     <div class="flex flex-col gap-1 items-center">
       <span>{{ t("has-account") }}</span>
-      <RouterLink to="/login">
+      <RouterLink :to="{ name: 'loginPage' }">
         <span class="text-blue-600 font-bold text-sm">
           {{ t("login") }}
         </span>
@@ -114,7 +114,7 @@ const tryCreateAccount = async (): Promise<void> => {
   if (isValid) {
     const { error } = await store.createOne(user);
     if (error) $externalResults.email = t(error);
-    else await router.push("/login");
+    else await router.push({ name: "loginPage" });
   }
   isLoading.value = false;
 };

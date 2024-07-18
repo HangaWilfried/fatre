@@ -32,7 +32,7 @@
     </div>
     <div class="flex flex-col gap-1 items-center">
       <span>{{ t("do-not-have-account") }}</span>
-      <RouterLink to="/signup">
+      <RouterLink :to="{ name: 'signupPage' }">
         <span class="text-blue-600 font-bold text-sm">
           {{ t("create-account") }}
         </span>
@@ -86,7 +86,7 @@ const tryLogin = async (): Promise<void> => {
   if (isValid) {
     const { error } = await store.login(user);
     if (error) $externalResults.email = t(error);
-    else await router.push("/admin/products");
+    else await router.push({ name: "productsListPage" });
   }
   isLoading.value = false;
 };
