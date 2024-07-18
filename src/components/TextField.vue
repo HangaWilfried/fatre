@@ -3,7 +3,7 @@ import type { ErrorObject } from "@vuelidate/core";
 
 const model = defineModel();
 
-defineProps<{ label: string; placeholder: string; errors?: ErrorObject[] }>();
+defineProps<{ label: string; placeholder?: string; errors?: ErrorObject[] }>();
 </script>
 
 <template>

@@ -8,27 +8,30 @@
           </h1>
         </div>
         <div
+          ref="menu"
           class="flex gap-3 p-2 items-center shadow-3xl border bg-white border-white cursor-pointer rounded-full"
         >
-          <div @click="isOpen = !isOpen">
+          <div @click="isMenuOpen = !isMenuOpen">
             <MenuIcon class="w-[30px] h-[30px]" />
           </div>
           <div class="rounded-full p-2 bg-gray-700 text-white">WR</div>
         </div>
       </div>
       <Transition>
-        <nav v-if="isOpen">
-          <RouterLink class="px-4 py-2" to="/admin/products">
-            shops
-          </RouterLink>
-          <RouterLink class="px-4 py-2" to="/admin/settings">
-            settings
+        <nav v-if="isMenuOpen">
+          <RouterLink
+            v-for="link in links"
+            :key="link.name"
+            exactActiveClass="bg-blue-100/30"
+            class="px-4 py-2"
+            :to="{ name: link.name }"
+          >
+            {{ link.text }}
           </RouterLink>
           <span class="px-4 py-2">Logout</span>
         </nav>
       </Transition>
     </header>
-
     <section class="p-5">
       <RouterView />
     </section>
@@ -39,12 +42,29 @@
 import { RouterView, RouterLink } from "vue-router";
 import MenuIcon from "@/icons/MenuIcon.vue";
 import { ref } from "vue";
+import { useDetectOutsideClick } from "@/utils/outsideClick";
 
-const isOpen = ref<boolean>(false);
+const isMenuOpen = ref<boolean>(false);
+const menu = ref<HTMLElement | undefined>();
+
+useDetectOutsideClick(menu, () => {
+  isMenuOpen.value = false;
+});
+
+const links = [
+  {
+    name: "productsListPage",
+    text: "shops",
+  },
+  {
+    name: "settingsPage",
+    text: "settings",
+  },
+];
 </script>
 
 <style scoped>
-nav{
+nav {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
@@ -58,11 +78,8 @@ nav{
   opacity: 0;
 }
 
-nav{
-  @apply flex flex-col w-[40%] absolute top-[80px] gap-4 left-[230px] z-20 rounded font-bold box-border bg-white;
-}
-
-.router-link-exact-active{
-  @apply bg-blue-200/20;
+nav {
+  @apply flex flex-col w-[40%] absolute top-[80px] left-[230px]
+    z-20 rounded box-border bg-white;
 }
 </style>

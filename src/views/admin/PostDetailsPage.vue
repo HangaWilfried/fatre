@@ -5,9 +5,9 @@
       <div class="flex justify-between items-baseline">
         <h1 class="flex flex-col gap-1">
           <span class="text-xl font-black">{{ post.title }}</span>
-          <span :class="['text-xs w-fit capitalize', post.status]">{{
-            post.status
-          }}</span>
+          <span :class="['text-xs w-fit capitalize', post.status]">
+            {{ post.status }}
+          </span>
         </h1>
         <span class="text-sm text-gray-900">{{ post.amount.toString }}</span>
       </div>

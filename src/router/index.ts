@@ -7,44 +7,44 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "home page",
+      name: "homePage",
       component: HomePage,
     },
     {
       path: "/login",
-      name: "login page",
+      name: "loginPage",
       component: () => import("@/views/LoginPage.vue"),
     },
     {
       path: "/signup",
-      name: "signup page",
+      name: "signupPage",
       component: () => import("@/views/SignupPage.vue"),
     },
     {
-      path: "/admin/products",
-      name: "admin page",
+      path: "/admin",
+      name: "adminSpace",
       component: () => import("@/views/admin/LayoutPage.vue"),
       children: [
         {
-          path: "",
-          name: "products page",
+          path: "products",
+          name: "productsListPage",
           component: () => import("@/views/admin/PostsListPage.vue"),
         },
         {
-          path: "/products/:id",
+          path: "products/:id",
           props: true,
-          name: "single product page",
+          name: "productDetailsPage",
           component: () => import("@/views/admin/PostDetailsPage.vue"),
         },
         {
-          path: "/products/new",
+          path: "products/new",
           props: true,
-          name: "add product page",
+          name: "addProductPage",
           component: () => import("@/views/admin/CreatePostPage.vue"),
         },
         {
-          path: "/admin/settings",
-          name: "user settings page",
+          path: "settings",
+          name: "settingsPage",
           component: () => import("@/views/admin/SettingsPage.vue"),
         },
       ],

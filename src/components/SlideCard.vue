@@ -13,15 +13,15 @@
         class="translate-x-0 transform ease-in-out duration-200"
       />
       <ArrowWithBackground
-        class="absolute right-4 top-[45%] cursor-pointer"
+        class="absolute right-4 top-[45%] cursor-pointer z-10"
         v-if="currentIndex < files?.length - 1"
-        @click.stop="increaseCurrentIndex"
+        @click.prevent="increaseCurrentIndex"
         data-test="forward-chevron-icon"
       />
       <ArrowWithBackground
-        class="absolute -rotate-180 cursor-pointer left-4 top-[45%]"
+        class="absolute -rotate-180 cursor-pointer left-4 top-[45%] z-10"
         v-if="currentIndex > 0"
-        @click.stop="decreaseCurrentIndex"
+        @click.prevent="decreaseCurrentIndex"
         data-test="backward-chevron-icon"
       />
       <LegendSlider ref="legend" :current-item="currentIndex" :files="files" />
@@ -62,8 +62,7 @@ const shouldScrollRight = computed(() => {
   if (!legend.value) return;
 
   return (
-    legend.value.scrollWidth - legend.value.clientWidth >=
-    scrollLeftPixel.value
+    legend.value.scrollWidth - legend.value.clientWidth >= scrollLeftPixel.value
   );
 });
 

@@ -1,17 +1,12 @@
 import { useCommon } from "../commons";
 import { filesSources, imagesId } from "../commons/data";
-const {
-  login,
-  createImage,
-  createProduct,
-  fetchProductById,
-  fetchImageById
-} = useCommon();
+const { login, createImage, createProduct, fetchProductById, fetchImageById } =
+  useCommon();
 
 describe("Product Creation", () => {
   it("Should create a product", () => {
     login();
-    cy.visit("/products/new");
+    cy.visit("/admin/products/new");
     cy.get("[data-test='input-amount'").type("100");
     cy.get("[data-test='input-product name']").type("post 1");
     cy.get("[data-test='input-description']").type("description 1");
@@ -29,11 +24,11 @@ describe("Product Creation", () => {
       expect(request.body).to.deep.equal({
         price: {
           amount: 100,
-          currency: "XAF"
+          currency: "XAF",
         },
         allImageIds: imagesId,
         title: "post 1",
-        description: "description 1"
+        description: "description 1",
       });
     });
   });

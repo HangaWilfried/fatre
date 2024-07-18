@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const model = defineModel<string>();
 
-defineProps<{ label: string; placeholder: string }>();
+defineProps<{ label: string; placeholder?: string }>();
 </script>
 
 <template>

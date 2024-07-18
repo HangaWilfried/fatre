@@ -8,10 +8,10 @@
       </span>
     </h2>
     <div class="flex gap-2 items-center" v-else>
-      <RouterLink to="/login">
+      <RouterLink :to="{ name: 'loginPage' }">
         <ButtonWrapper :label="t('login')" />
       </RouterLink>
-      <RouterLink to="/signup">
+      <RouterLink :to="{ name: 'signupPage' }">
         <ButtonWrapper :label="t('signup')" />
       </RouterLink>
     </div>
@@ -22,12 +22,13 @@
       <CardSkeleton />
     </div>
     <div class="cards" v-else-if="posts.length">
-      <PostCard
+      <RouterLink
+        :to="{ name: 'productDetailsPage', params: { id: post.id } }"
         v-for="post in posts"
         :key="post.id"
-        :post="post"
-        :handleClick="goToPostDetails"
-      />
+      >
+        <PostCard :post="post" />
+      </RouterLink>
     </div>
     <div v-else>
       <EmptySVG />
@@ -40,7 +41,7 @@
 import type { Post } from "@/domain/post";
 import { usePostStore } from "@/stores/post";
 import { useTranslation } from "@/utils/i18n";
-import { useRouter, RouterLink } from "vue-router";
+import { RouterLink } from "vue-router";
 import { useSessionStore } from "@/stores/session";
 import { onBeforeMount, defineAsyncComponent, ref, type Ref } from "vue";
 
@@ -59,14 +60,8 @@ const t = useTranslation();
 const store = usePostStore();
 const session = useSessionStore();
 
-const router = useRouter();
-
 const posts = ref<Post[]>([]) as Ref<Post[]>;
 const isLoading = ref<boolean>(false);
-
-const goToPostDetails = async (postId: string): Promise<void> => {
-  await router.push(`/articles/${postId}`);
-};
 
 onBeforeMount(async () => {
   isLoading.value = true;

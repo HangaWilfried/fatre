@@ -1,5 +1,7 @@
 <template>
-  <div class="flex gap-1 p-2 items-center overflow-hidden w-16 absolute bottom-6 left-[45%]">
+  <div
+    class="flex gap-1 p-2 items-center overflow-hidden w-16 absolute bottom-6 left-[45%]"
+  >
     <span
       v-for="(item, index) in files"
       :class="[

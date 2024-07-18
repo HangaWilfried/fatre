@@ -33,14 +33,14 @@
   }
 
   .scroll::-webkit-scrollbar-thumb {
-    @apply bg-gray-800 rounded-[10px];
+    @apply bg-black/15 rounded-[10px];
   }
 
   .scroll::-webkit-scrollbar-track {
-    @apply rounded-[10px] bg-gray-500;
+    @apply rounded-[10px] bg-transparent;
   }
 
   .scroll::-webkit-scrollbar {
-    @apply w-[2px] rounded-[10px];
+    @apply w-[3px] rounded-[10px];
   }
 }

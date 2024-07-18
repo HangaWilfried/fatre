@@ -6,23 +6,20 @@ module.exports = {
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",
-    "@vue/eslint-config-typescript",
-    "@vue/eslint-config-prettier/skip-formatting"
+    "@vue/eslint-config-typescript/recommended",
+    "@vue/eslint-config-prettier",
   ],
+  env: {
+    jquery: true,
+    node: true,
+    "vue/setup-compiler-macros": true,
+  },
   overrides: [
     {
-      files: [
-        "cypress/e2e/**/*.{cy,spec}.{js,ts,jsx,tsx}",
-        "cypress/support/**/*.{js,ts,jsx,tsx}"
-      ],
-      extends: [
-        "plugin:cypress/recommended"
-      ]
-    }
+      files: ["cypress/integration/**.spec.{js,ts,jsx,tsx}"],
+      extends: ["plugin:cypress/recommended"],
+    },
   ],
-  parserOptions: {
-    ecmaVersion: "latest"
-  },
   rules: {
     "array-bracket-spacing": ["error", "never"],
     "arrow-spacing": 2,

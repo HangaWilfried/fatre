@@ -2,13 +2,9 @@
   <div class="space-y-4">
     <h1 class="p-4 pt-0 border-b border-gray-300">Form to add product</h1>
     <form @submit.prevent="handleSubmit" class="p-4 space-y-3">
-      <TextField v-model="state.title" label="product name" placeholder="" />
-      <TextField v-model="state.amount" label="amount" placeholder="" />
-      <TextareaField
-        v-model="state.description"
-        label="description"
-        placeholder=""
-      />
+      <TextField v-model="state.title" label="product name" />
+      <TextField v-model="state.amount" label="amount" />
+      <TextareaField v-model="state.description" label="description" />
       <h2>Product image</h2>
       <ImageField v-model="state.fileIds" />
       <button
@@ -62,7 +58,7 @@ const handleSubmit = async (): Promise<void> => {
     const { data } = await store.createOne(state);
     if (data)
       await router.push({
-        name: "single product page",
+        name: "productDetailsPage",
         params: {
           id: data,
         },
