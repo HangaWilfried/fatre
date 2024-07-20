@@ -1,8 +1,8 @@
 <template>
   <section>
-    <h1>Fatre</h1>
-    <div>
-      <h2>Log in to continue</h2>
+    <h1 class="text-2xl font-bold p-4">Fatre</h1>
+    <div class="flex flex-col p-4 gap-y-5">
+      <h2 class="text-xl font-bold">Log in to continue</h2>
       <div class="flex flex-col gap-0.5">
         <span
           v-for="error in v$.$errors"
@@ -26,6 +26,7 @@
       />
       <ButtonWrapper
         @click="tryLogin"
+        class="border bg-gray-700 text-white rounded-md font-bold"
         :is-loading="isLoading"
         :label="t('continue')"
       />

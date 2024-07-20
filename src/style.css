@@ -8,11 +8,11 @@
   }
 
   .ipt-border {
-    @apply outline-none rounded-lg h-10 px-2 border border-gray-300 text-gray-700;
+    @apply outline-none rounded-md h-14 px-2 border border-gray-200 text-gray-700 bg-gray-100;
   }
 
   .ipt-border-pristine {
-    @apply focus:border-2 focus:border-blue-500;
+    @apply focus:border focus:border-gray-400;
   }
 
   .ipt-border-error {

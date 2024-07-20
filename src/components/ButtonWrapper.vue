@@ -8,7 +8,7 @@ defineProps<{
 <template>
   <button
     :data-test="`${label}-btn`"
-    class="py-1 px-2 flex items-center gap-2 justify-center"
+    class="py-3 px-2 flex items-center gap-2 justify-center text-xl"
   >
     <slot name="cta">
       <span v-if="isLoading" class="spinner" />
