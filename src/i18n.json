@@ -8,6 +8,7 @@
     "email": "email",
     "login": "Login",
     "placeholder": {
+      "password": "Password",
       "firstname": "firstname",
       "lastname": "lastname",
       "email": "email"
@@ -22,6 +23,7 @@
     "lastname": "lastname",
     "email": "email",
     "placeholder": {
+      "password": "Mot de passe",
       "firstname": "firstname",
       "lastname": "lastname",
       "email": "email"

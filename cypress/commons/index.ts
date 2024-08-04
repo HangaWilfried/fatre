@@ -1,32 +1,43 @@
+/* eslint-disable prettier/prettier */
 /// <reference types="cypress" />
 
 import { filesSources, imagesId } from "./data";
 import { CurrencyDTO, PublicationStatusDTO } from "../../src/services/main";
 
 export const useCommon = () => {
-  const token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnlAZ21haWwuY29tIiwiaWF0IjoxNzE5MDY2OTM3LCJleHAiOjE3MTkxMDA4MDB9.gqkRPHu9Kf6CNR_chyKWHeN6ehKfMTUejW1d8mdXfmw";
+  const token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbnlAZ21haWwuY29tIiwiaWF0IjoxNzE5MDY2OTM3LCJleHAiOjE3MTkxMDA4MDB9.gqkRPHu9Kf6CNR_chyKWHeN6ehKfMTUejW1d8mdXfmw";
 
-  const login = (credential: {
-  email: string;
-  password: string
-} = {
-    email: "demo@email.com",
-    password: "demo.password"
-  }): void => {
+
+  const stubLoginResponse = (): void => {
+    cy.intercept(
+      {
+        url: "http://localhost:8080/sign-in",
+        method: "POST",
+      },
+      {
+        statusCode: 200,
+        body: {
+          value: token,
+        },
+      }
+    );
+  };  
+
+  const login = (
+    credential: {
+      email: string;
+      password: string;
+    } = {
+      email: "demo@email.com",
+      password: "demo.password",
+    }
+  ): void => {
     cy.viewport("iphone-xr");
     cy.visit("/login");
     cy.get("[data-test='input-email']").type(credential.email);
     cy.get("[data-test='input-password']").type(credential.password);
-
-    cy.intercept({
-      url: "http://localhost:8080/sign-in",
-      method: "POST"
-    }, {
-      statusCode: 200,
-      body: {
-        value: token,
-      }
-    });
+    stubLoginResponse();
     cy.get("[data-test='continue-btn']").click();
   };
 
@@ -38,7 +49,7 @@ export const useCommon = () => {
       },
       {
         statusCode: 200,
-        body: { id: imageId }
+        body: { id: imageId },
       }
     ).as("save-image");
   };
@@ -82,9 +93,10 @@ export const useCommon = () => {
           allImageIds: imagesId,
           price: {
             amount: 120000,
-            currency: "XAF"
+            currency: "XAF",
           },
-          description: "Faites une sélection de tous vos articles préférés en les enregistrant dans Votre sélection, puis revenez à tout moment et reprenez exactement là où vous en étiez.",
+          description:
+            "Faites une sélection de tous vos articles préférés en les enregistrant dans Votre sélection, puis revenez à tout moment et reprenez exactement là où vous en étiez.",
           status: "DRAFT",
         },
       }

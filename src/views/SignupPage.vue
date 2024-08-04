@@ -1,8 +1,8 @@
 <template>
   <section>
-    <h1>Fatre</h1>
-    <div>
-      <h2>Log in to continue</h2>
+    <h1 class="text-2xl font-bold p-4">Fatre</h1>
+    <div class="flex flex-col p-4 gap-y-5">
+      <h2 class="text-xl font-bold">Signup</h2>
       <div class="flex flex-col gap-0.5">
         <span
           v-for="error in v$.$errors"
@@ -43,11 +43,12 @@
       />
       <ButtonWrapper
         @click="tryCreateAccount"
+        class="border bg-gray-700 text-white rounded-md font-bold"
         :is-loading="isLoading"
         :label="t('create-account')"
       />
     </div>
-    <div class="flex flex-col gap-1 items-center">
+    <div class="flex flex-col gap-1 items-center mb-6">
       <span>{{ t("has-account") }}</span>
       <RouterLink :to="{ name: 'loginPage' }">
         <span class="text-blue-600 font-bold text-sm">

@@ -5,7 +5,7 @@ defineProps<{ label: string; placeholder?: string }>();
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col gap-2 text-xl">
     <label class="text-zinc-900" :for="label">{{ label }}</label>
     <textarea
       :id="label"
