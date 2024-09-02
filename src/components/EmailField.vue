@@ -21,5 +21,14 @@ defineProps<{ label: string; placeholder: string; errors?: ErrorObject[] }>();
       autocomplete="off"
       :placeholder="placeholder"
     />
+    <div v-if="errors?.length" class="flex flex-col gap-0.5">
+      <span
+        v-for="error in errors"
+        :key="error.$uid"
+        class="text-rose-600 font-bold text-sm"
+      >
+        {{ error.$message }}
+      </span>
+    </div>
   </div>
 </template>

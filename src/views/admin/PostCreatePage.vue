@@ -1,19 +1,21 @@
 <template>
   <div class="space-y-4">
-    <h1 class="p-4 pt-0 border-b border-gray-300">Form to add product</h1>
-    <form @submit.prevent="handleSubmit" class="p-4 space-y-3">
+    <h1 class="border-b border-gray-300 pb-2 text-lg">Form to add product</h1>
+    <form @submit.prevent="handleSubmit" class="space-y-3">
       <TextField v-model="state.title" label="product name" />
       <TextField v-model="state.amount" label="amount" />
       <TextareaField v-model="state.description" label="description" />
       <h2>Product image</h2>
       <ImageField v-model="state.fileIds" />
-      <button
-        data-test="submit-btn"
-        type="submit"
-        class="w-full py-2 border rounded mt-4 font-bold text-white bg-gray-700"
-      >
-        Save product
-      </button>
+      <div class="pt-7 grid grid-cols-1">
+        <ButtonWrapper
+          type="submit"
+          class="py-4"
+          :theme="Theme.DARK"
+          label="Save product"
+          data-test="submit-btn"
+        />
+      </div>
     </form>
   </div>
 </template>
@@ -21,7 +23,11 @@
 <script setup lang="ts">
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
+
 import useVuelidate from "@vuelidate/core";
+import { required, minLength } from "@vuelidate/validators";
+
+import { Theme } from "@/utils/enum";
 import { usePostStore } from "@/stores/post";
 import type { PostData } from "@/domain/post";
 
@@ -41,12 +47,12 @@ const state = reactive<PostData>({
 });
 
 const rules = {
-  title: { required: true },
-  amount: { required: true },
-  description: { required: true },
+  title: { required },
+  amount: { required },
+  description: { required },
   fileIds: {
-    required: true,
-    minLength: 1,
+    required,
+    minLength: minLength(1),
   },
 };
 

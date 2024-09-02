@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useTranslation } from "@/utils/i18n";
 import type { ErrorObject } from "@vuelidate/core";
 import OpenEyeIcon from "@/icons/OpenEyeIcon.vue";
 import CloseEyeIcon from "@/icons/CloseEyeIcon.vue";
 
 const model = defineModel();
-
-const t = useTranslation();
 
 defineProps<{ label: string; placeholder: string; errors?: ErrorObject[] }>();
 
@@ -36,6 +33,15 @@ const showPassword = ref<boolean>(false);
       >
         <CloseEyeIcon v-if="showPassword" />
         <OpenEyeIcon v-else />
+      </span>
+    </div>
+    <div v-if="errors?.length" class="flex flex-col gap-0.5">
+      <span
+        v-for="error in errors"
+        :key="error.$uid"
+        class="text-rose-600 font-bold text-sm"
+      >
+        {{ error.$message }}
       </span>
     </div>
   </div>

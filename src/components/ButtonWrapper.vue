@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import type { Theme } from "@/utils/enum";
+
 defineProps<{
   isLoading?: boolean;
+  theme?: Theme;
   label: string;
 }>();
 </script>
@@ -8,7 +11,11 @@ defineProps<{
 <template>
   <button
     :data-test="`${label}-btn`"
-    class="py-3 px-2 flex items-center gap-2 justify-center text-xl"
+    :class="[
+      'py-1 px-2 min-w-14 flex items-center gap-2 justify-center',
+      theme,
+    ]"
+    :disabled="isLoading"
   >
     <slot name="cta">
       <span v-if="isLoading" class="spinner" />
@@ -23,6 +30,14 @@ defineProps<{
 }
 
 .gray {
-  @apply bg-gray-500 text-gray-900 rounded-lg;
+  @apply bg-gray-600 text-white rounded-lg;
+}
+
+.red {
+  @apply bg-red-500 text-white rounded-lg;
+}
+
+.dark {
+  @apply text-white bg-gray-700 rounded-lg;
 }
 </style>

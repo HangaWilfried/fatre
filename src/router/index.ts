@@ -28,7 +28,7 @@ const router = createRouter({
         {
           path: "products",
           name: "productsListPage",
-          component: () => import("@/views/admin/PostsListPage.vue"),
+          component: () => import("@/views/admin/PostListPage.vue"),
         },
         {
           path: "products/:id",
@@ -37,10 +37,16 @@ const router = createRouter({
           component: () => import("@/views/admin/PostDetailsPage.vue"),
         },
         {
+          path: "products/:id/edit",
+          props: true,
+          name: "productEditPage",
+          component: () => import("@/views/admin/PostEditPage.vue"),
+        },
+        {
           path: "products/new",
           props: true,
           name: "addProductPage",
-          component: () => import("@/views/admin/CreatePostPage.vue"),
+          component: () => import("@/views/admin/PostCreatePage.vue"),
         },
         {
           path: "settings",

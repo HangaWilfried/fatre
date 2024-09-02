@@ -3,15 +3,6 @@
     <h1 class="text-2xl font-bold p-4">Fatre</h1>
     <div class="flex flex-col p-4 gap-y-5">
       <h2 class="text-xl font-bold">Signup</h2>
-      <div class="flex flex-col gap-0.5">
-        <span
-          v-for="error in v$.$errors"
-          :key="error.$uid"
-          class="text-rose-600 font-bold text-sm"
-        >
-          {{ error.$message }}
-        </span>
-      </div>
       <TextField
         :label="t('lastname')"
         v-model="user.lastname"
@@ -43,7 +34,8 @@
       />
       <ButtonWrapper
         @click="tryCreateAccount"
-        class="border bg-gray-700 text-white rounded-md font-bold"
+        class="py-4"
+        :theme="Theme.GRAY"
         :is-loading="isLoading"
         :label="t('create-account')"
       />
@@ -62,9 +54,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user";
-import { useTranslation } from "@/utils/i18n";
+
+import { Theme } from "@/utils/enum";
 import type { UserData } from "@/domain/user";
+import { useTranslation } from "@/utils/i18n";
+import { useSessionStore } from "@/stores/session";
 
 import useVuelidate from "@vuelidate/core";
 import { required, email, sameAs } from "@vuelidate/validators";
@@ -74,7 +68,7 @@ import EmailField from "@/components/EmailField.vue";
 import ButtonWrapper from "@/components/ButtonWrapper.vue";
 import PasswordField from "@/components/PasswordField.vue";
 
-const store = useUserStore();
+const store = useSessionStore();
 const t = useTranslation();
 
 const router = useRouter();
