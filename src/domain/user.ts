@@ -19,8 +19,8 @@ export type UserData = {
   dateOfBirth?: string;
   gender?: string;
   phoneNumber?: {
-    number: string;
-    countryCode: string;
+    number?: string;
+    countryCode?: string;
   };
   profileImageId?: string;
 };
@@ -73,7 +73,7 @@ export class User {
       : EmptyContact();
   }
 
-  static builder(user: UserData): RegistrationRequestDTO {
+  static builder(user: Partial<UserData>): RegistrationRequestDTO {
     return {
       email: user.email,
       lastname: user.lastname,

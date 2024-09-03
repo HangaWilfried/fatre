@@ -18,6 +18,10 @@ export class Money {
     return this.money.amount ?? 0;
   }
 
+  get DTO(): MoneyDTO {
+    return this.money;
+  }
+
   get toString(): string {
     const locale = navigator.language ?? "en-US";
     return new Intl.NumberFormat(locale, {

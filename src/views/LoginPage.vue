@@ -3,15 +3,6 @@
     <h1 class="text-2xl font-bold p-4">Fatre</h1>
     <div class="flex flex-col p-4 gap-y-5">
       <h2 class="text-xl font-bold">Log in to continue</h2>
-      <div class="flex flex-col gap-0.5">
-        <span
-          v-for="error in v$.$errors"
-          :key="error.$uid"
-          class="text-rose-600 font-bold text-sm"
-        >
-          {{ error.$message }}
-        </span>
-      </div>
       <EmailField
         v-model="user.email"
         :label="t('email')"
@@ -26,7 +17,8 @@
       />
       <ButtonWrapper
         @click="tryLogin"
-        class="border bg-gray-700 text-white rounded-md font-bold"
+        class="py-4"
+        :theme="Theme.GRAY"
         :is-loading="isLoading"
         :label="t('continue')"
       />
@@ -45,9 +37,11 @@
 <script setup lang="ts">
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useSessionStore } from "@/stores/session";
+
+import { Theme } from "@/utils/enum";
 import { useTranslation } from "@/utils/i18n";
 import type { Credential } from "@/domain/user";
+import { useSessionStore } from "@/stores/session";
 
 import useVuelidate from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";

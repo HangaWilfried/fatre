@@ -18,6 +18,10 @@ export class Contact {
   get toString(): string {
     return this.countryCode + this.number;
   }
+
+  get DTO(): PhoneNumberDTO {
+    return this.contact;
+  }
 }
 
 export const EmptyContact = (): Contact => {

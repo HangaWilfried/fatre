@@ -53,6 +53,10 @@ export class Post {
     return this.status === Status.DRAFT;
   }
 
+  get isPosted(): boolean {
+    return this.status === Status.POST;
+  }
+
   static builder(post: PostData): CreatePublicationDTO {
     return {
       price: {
