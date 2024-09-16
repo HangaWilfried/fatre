@@ -107,11 +107,12 @@ const saveFile = async (file: File) => {
   };
 };
 
-const handleImage = async (event: {
-  target: { files: File[] };
-}): Promise<void> => {
-  await Promise.all([...event.target.files].map(saveFile));
-  emit("update:modelValue", files.ids);
+const handleImage = async (event: Event): Promise<void> => {
+  const selectedFiles = (event.target as HTMLInputElement)?.files;
+  if(selectedFiles) {
+    await Promise.all(Array.from(selectedFiles).map(saveFile));
+    emit("update:modelValue", files.ids);
+  }
 };
 </script>
 
